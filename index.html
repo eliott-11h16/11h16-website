@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11H16 — Creative Studio</title>
+    <meta name="description" content="11H16 — Creative Studio based in Paris. In House Human Creativity.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-left">
+            <a href="#" class="nav-logo">
+                <img src="assets/logo.png" alt="11H16" class="logo-img">
+            </a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#about" class="nav-link">About</a>
+        </div>
+        <div class="nav-right">
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">
+            <span class="menu-text">menu</span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mob-menu" id="mobMenu">
+        <button class="mob-close" id="mobClose">close</button>
+        <div class="mob-inner">
+            <a href="#projects" class="mob-link"><span>Projects</span></a>
+            <a href="#about" class="mob-link"><span>About</span></a>
+            <a href="#services" class="mob-link"><span>Services</span></a>
+            <a href="#contact" class="mob-link"><span>Contact</span></a>
+        </div>
+        <div class="mob-bottom">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <video class="hero-video active" autoplay muted loop playsinline data-project="Marc Jacobs Daisy">
+            <source src="assets/projects/marcjacobs_film.mp4" type="video/mp4">
+        </video>
+        <video class="hero-video" muted loop playsinline data-project="Gucci">
+            <source src="assets/projects/gucci_film.mp4" type="video/mp4">
+        </video>
+        <video class="hero-video" muted loop playsinline data-project="Bucherer Noël">
+            <source src="assets/projects/bucherer_film.mp4" type="video/mp4">
+        </video>
+        <div class="hero-text">
+            <div class="hero-line"><span class="hero-word" style="--d:0">IN HOUSE</span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:1">HUMAN</span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:2">CREATIVITY</span></div>
+        </div>
+        <div class="hero-sub">
+            <h1 class="hero-desc">
+                Creative CGI Studio,<br>
+                Creating for tomorrow with tools of today.
+            </h1>
+            <p class="hero-tags">CGI. AI. VFX. Production. Creative Direction.</p>
+        </div>
+        <div class="hero-progress">
+            <span class="hero-progress-project">Marc Jacobs Daisy</span>
+            <div class="hero-progress-bottom">
+                <span class="hero-progress-count">01 / 03</span>
+                <div class="hero-progress-bar">
+                    <div class="hero-progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section section-projects" id="projects">
+        <div class="sec-head">
+            <h2 class="sec-title reveal">Selected<br>Work</h2>
+            <span class="sec-count reveal">(13)</span>
+        </div>
+        <div class="proj-grid">
+            <a href="project-almajed.html" class="proj reveal" style="--i:0">
+                <div class="proj-img" style="background-image:url('assets/projects/ALMAJED_BOISEE_KV_4_16x9_V1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Almajed Boisée</span>
+                    <span class="proj-cat">Film & Key Visuals</span>
+                </div>
+            </a>
+            <a href="project-bucherer.html" class="proj reveal" style="--i:1">
+                <div class="proj-img" style="background-image:url('assets/projects/BUCHERER_NOEL_KV_RINGS_VERTICAL_V1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Bucherer Noël</span>
+                    <span class="proj-cat">Campagne & Capsules</span>
+                </div>
+            </a>
+            <a href="project-marcjacobs.html" class="proj proj--wide reveal" style="--i:2">
+                <div class="proj-img" style="background-image:url('assets/projects/MARC_JACOBS_DAISY_CAPTURE_3_16x9_V1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Marc Jacobs Daisy</span>
+                    <span class="proj-cat">Film & Direction Artistique</span>
+                </div>
+            </a>
+            <a href="project-gucci.html" class="proj reveal" style="--i:3">
+                <div class="proj-img" style="background-image:url('assets/projects/GUCCI_RD_CAPTURE_3_17x24_V1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Gucci</span>
+                    <span class="proj-cat">Capture & Film</span>
+                </div>
+            </a>
+            <a href="project-coperni.html" class="proj reveal" style="--i:4">
+                <div class="proj-img" style="background-image:url('assets/projects/COPERNI_KV_2.png');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Coperni Foot Print</span>
+                    <span class="proj-cat">Film & Key Visuals</span>
+                </div>
+            </a>
+            <a href="project-drjart.html" class="proj proj--wide reveal" style="--i:5">
+                <div class="proj-img" style="background-image:url('assets/projects/DR_JART_SKIN_KV_01-Korean_Skincare_16x9_V1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Dr. Jart+</span>
+                    <span class="proj-cat">Key Visuals Skincare</span>
+                </div>
+            </a>
+            <a href="project-jhag.html" class="proj reveal" style="--i:6">
+                <div class="proj-img" style="background-image:url('assets/projects/JHAG_POWDERLOVE_CAPTURE_4_16X9_V1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">JHAG Powder Love</span>
+                    <span class="proj-cat">Capture & Direction Artistique</span>
+                </div>
+            </a>
+            <a href="project-elevensixtine.html" class="proj reveal" style="--i:7">
+                <div class="proj-img" style="background-image:url('assets/projects/ELEVEN_SIXTINE_CAPTURE_1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Eleven Sixtine</span>
+                    <span class="proj-cat">Film & Capture</span>
+                </div>
+            </a>
+            <a href="project-musee.html" class="proj reveal" style="--i:8">
+                <div class="proj-img" style="background-image:url('assets/projects/MUSEE_CAPTURE_3.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Musée</span>
+                    <span class="proj-cat">Film & Capture</span>
+                </div>
+            </a>
+            <a href="project-poche.html" class="proj reveal" style="--i:9">
+                <div class="proj-img" style="background-image:url('assets/projects/POCHE_CAPTURE_3.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Poche</span>
+                    <span class="proj-cat">Film & Capture</span>
+                </div>
+            </a>
+            <a href="project-viktorrolf.html" class="proj proj--wide reveal" style="--i:10">
+                <div class="proj-img" style="background-image:url('assets/projects/VIKTOR_ROLF_KV_1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Viktor & Rolf Flowerbomb</span>
+                    <span class="proj-cat">Key Visuals & Capture</span>
+                </div>
+            </a>
+            <a href="project-valentino.html" class="proj reveal" style="--i:11">
+                <div class="proj-img" style="background-image:url('assets/projects/VALENTINO_CAPTURE_1.jpg');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Valentino Beauty</span>
+                    <span class="proj-cat">Film & Capture</span>
+                </div>
+            </a>
+            <a href="project-givenchy.html" class="proj reveal" style="--i:12">
+                <div class="proj-img" style="background-image:url('assets/projects/GIVENCHY_LINTERDIT_KV_1.png');"></div>
+                <div class="proj-meta">
+                    <span class="proj-name">Givenchy</span>
+                    <span class="proj-cat">Key Visuals</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section section-about" id="about">
+        <div class="about-hero reveal">
+            <h2 class="fat-title">
+                <span>WE CRAFT</span>
+                <span>BRANDS THAT</span>
+                <span class="fat-outline">MATTER</span>
+            </h2>
+        </div>
+        <div class="about-body">
+            <div class="about-text reveal">
+                <p>
+                    At 11h16, creativity has no bounds.
+                    3D, CGI and mixed media allow us to build worlds, propose bold ideas, and create work that feels both modern and sensory, designed to resonate with every viewer's sensitivity.
+                </p>
+                <p>
+                    We are a creative agency and post-production studio specialized in 3D, CGI and mixed media, with an international in-house team built for agility and craft. We support projects at every scale: from artistic explorations to global campaigns and high-volume production rollouts.
+                </p>
+                <p>
+                    Our process is collaborative and structured. We work hand-in-hand with clients to define objectives, then translate them into a strong visual direction through brainstorming, sketching and storyboarding. This phase produces a precise creative brief that anchors the full pipeline, from design to final delivery.
+                </p>
+                <p>
+                    To meet real-world campaign demands, we operate with clear schedules, milestone-based planning, and dependable delivery timelines ensuring consistency, quality, and speed across all assets.
+                </p>
+            </div>
+            <div class="about-services" id="services">
+                <div class="svc reveal" style="--i:0">
+                    <span class="svc-title">3D & CGI Production</span>
+                    <div class="svc-details">
+                        <span>3D Product Modeling</span>
+                        <span>Look Development & Shading</span>
+                        <span>Lighting & Rendering</span>
+                        <span>Photorealistic Packshots</span>
+                        <span>Environment & Set Creation</span>
+                        <span>Camera Matching & Virtual Shooting</span>
+                    </div>
+                </div>
+                <div class="svc reveal" style="--i:1">
+                    <span class="svc-title">Stills Post-Production</span>
+                    <div class="svc-details">
+                        <span>High-End Retouch</span>
+                        <span>Image Compositing & Extension</span>
+                        <span>Colour Grading & Product Matching</span>
+                        <span>Pre-Production Consultation</span>
+                        <span>On-Set Supervision & Retouching</span>
+                        <span>Digital Capture</span>
+                        <span>Re-Shoot</span>
+                        <span>Certified Fogra Proof Printing</span>
+                    </div>
+                </div>
+                <div class="svc reveal" style="--i:2">
+                    <span class="svc-title">CGI Post-Production</span>
+                    <div class="svc-details">
+                        <span>Compositing & Integration</span>
+                        <span>Texture & Realism Enhancing</span>
+                        <span>Upscaling & Large Format</span>
+                        <span>Image Extension & Background Creation</span>
+                        <span>Colour Matching & Final Grading</span>
+                    </div>
+                </div>
+                <div class="svc reveal" style="--i:3">
+                    <span class="svc-title">Film Post-Production</span>
+                    <div class="svc-details">
+                        <span>Film Editing & Color Grading</span>
+                        <span>Sound Design & Composition</span>
+                        <span>3D CGI VFX Motion Graphics</span>
+                        <span>Film Retouching & Clean-Up</span>
+                        <span>Compositing & Visual Effects</span>
+                    </div>
+                </div>
+                <div class="svc reveal" style="--i:4">
+                    <span class="svc-title">Mix Media</span>
+                    <div class="svc-details">
+                        <span>Photo & CGI Hybrid Compositing</span>
+                        <span>Custom Technical & Creative Resources</span>
+                        <span>Still & Motion Integration</span>
+                        <span>Campaign Adaptations</span>
+                    </div>
+                </div>
+                <div class="svc reveal" style="--i:5">
+                    <span class="svc-title">AI Generation & Enhancing</span>
+                    <div class="svc-details">
+                        <span>Image Generation & Variations</span>
+                        <span>Large Format Upscaling</span>
+                        <span>Texture & Realism Enhancing</span>
+                        <span>Compositing & Extension</span>
+                        <span>Concept Exploration & Mood Images</span>
+                    </div>
+                </div>
+                <div class="svc reveal" style="--i:6">
+                    <span class="svc-title">Creative Services</span>
+                    <div class="svc-details">
+                        <span>Creative Direction</span>
+                        <span>Art Direction & Visual Concepts</span>
+                        <span>Pre-Production & Storyboarding</span>
+                        <span>Custom Creative & Technical Resources</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section section-contact" id="contact">
+        <h2 class="fat-title contact-title reveal">
+            <span>LET'S</span>
+            <span>TALK</span>
+        </h2>
+        <div class="contact-info reveal">
+            <a href="mailto:hello@11h16.studio" class="contact-email">hello@11h16.studio</a>
+            <div class="contact-links">
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Behance</a>
+            </div>
+            <p class="contact-addr">11H16 Studio — Paris, France</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span class="f-logo">11H16</span>
+        <span class="f-copy">&copy; 2026 — All rights reserved</span>
+        <span class="f-loc">Paris, FR</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

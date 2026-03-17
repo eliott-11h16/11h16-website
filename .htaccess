@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Clean project URLs: /project/bucherer -> project.php?slug=bucherer
+RewriteRule ^project/([a-z0-9-]+)/?$ project.php?slug=$1 [L,QSA]
+
+# Block access to includes/
+RewriteRule ^includes/ - [F,L]
+
+# Block access to install.php after setup (uncomment after install)
+# RewriteRule ^install\.php$ - [F,L]

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maison Élara — 11H16</title>
+    <meta name="description" content="Maison Élara — Identité visuelle par 11H16 Creative Studio.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Roboto Flex condensed for display text ── */
+        .proj-hero-title, .proj-hero-title span,
+        .proj-hero-cat,
+        .proj-brief-title,
+        .proj-detail-value,
+        .proj-quote-text,
+        .proj-next-title {
+            font-weight: 900;
+            font-stretch: 25%;
+        }
+
+        /* ── Project Detail ────────────────────────── */
+        .proj-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 var(--pad);
+            padding-bottom: 40px;
+            position: relative;
+        }
+
+        .proj-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: #1a1815;
+            z-index: 0;
+        }
+
+        .proj-hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+        }
+
+        .proj-hero-title {
+            font-family: var(--font-fat);
+            font-size: clamp(60px, 14vw, 200px);
+            letter-spacing: clamp(1px, 0.2vw, 3px);
+            text-transform: uppercase;
+            line-height: 0.88;
+            overflow: hidden;
+        }
+
+        .proj-hero-title span {
+            display: block;
+            transform: translateY(110%);
+            animation: slideUp 1s var(--ease-smooth) 0.2s forwards;
+        }
+
+        .proj-hero-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 24px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 0.7s forwards;
+        }
+
+        .proj-hero-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .proj-hero-cat {
+            font-family: var(--font-fat);
+            font-size: clamp(14px, 1.8vw, 22px);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .proj-hero-year {
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .proj-back {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s ease;
+        }
+
+        .proj-back:hover {
+            color: var(--white);
+        }
+
+        /* ── Project Content ──────────────────────── */
+        .proj-section {
+            padding: clamp(60px, 8vw, 120px) var(--pad);
+        }
+
+        .proj-brief {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 100px);
+            align-items: start;
+        }
+
+        .proj-brief-title {
+            font-family: var(--font-fat);
+            font-size: clamp(36px, 6vw, 80px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 0.92;
+        }
+
+        .proj-brief-text {
+            font-size: clamp(14px, 1.1vw, 17px);
+            font-weight: 400;
+            line-height: 1.8;
+            color: var(--grey-dark);
+            max-width: 500px;
+        }
+
+        .proj-details {
+            display: flex;
+            gap: clamp(40px, 6vw, 80px);
+            margin-top: 32px;
+        }
+
+        .proj-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .proj-detail-label {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--grey);
+        }
+
+        .proj-detail-value {
+            font-family: var(--font-fat);
+            font-size: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ── Image blocks ─────────────────────────── */
+        .proj-img-full {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #1a1815;
+        }
+
+        .proj-img-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .proj-img-half {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            background: #2a2520;
+        }
+
+        .proj-img-half:nth-child(2) {
+            background: #1e1e1c;
+        }
+
+        .proj-img-wide {
+            width: 100%;
+            aspect-ratio: 21 / 9;
+            background: #252218;
+        }
+
+        /* ── Quote ────────────────────────────────── */
+        .proj-quote {
+            padding: clamp(60px, 8vw, 120px) var(--pad);
+            text-align: center;
+        }
+
+        .proj-quote-text {
+            font-family: var(--font-fat);
+            font-size: clamp(32px, 6vw, 80px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 0.95;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .proj-quote-text .fat-outline {
+            display: block;
+        }
+
+        .proj-quote-author {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--grey);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Next project ─────────────────────────── */
+        .proj-next {
+            padding: clamp(80px, 10vw, 160px) var(--pad);
+            border-top: 1px solid var(--rule);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .proj-next-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--grey);
+            margin-bottom: 8px;
+        }
+
+        .proj-next-title {
+            font-family: var(--font-fat);
+            font-size: clamp(48px, 10vw, 140px);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 0.88;
+            transition: opacity 0.3s ease;
+        }
+
+        .proj-next:hover .proj-next-title {
+            opacity: 0.5;
+        }
+
+        .proj-next-cat {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--grey);
+        }
+
+        /* ── Responsive ───────────────────────────── */
+        @media (max-width: 768px) {
+            .proj-brief { grid-template-columns: 1fr; gap: 24px; }
+            .proj-img-grid { grid-template-columns: 1fr; }
+            .proj-details { flex-direction: column; gap: 16px; }
+            .proj-hero-meta { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .proj-next { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">
+                <svg viewBox="0 0 44 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg" style="color:#fff;">
+                    <circle cx="22" cy="18" r="16" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                    <text x="22" y="16" text-anchor="middle" font-size="7" font-family="Barlow" fill="currentColor" letter-spacing="1.5" font-weight="700">11H16</text>
+                    <text x="22" y="24" text-anchor="middle" font-size="4.5" font-family="Barlow" fill="currentColor" letter-spacing="1">STUDIO</text>
+                </svg>
+            </a>
+            <a href="index.html#projects" class="nav-link" style="color:#fff;">Projects</a>
+            <a href="index.html#about" class="nav-link" style="color:#fff;">About</a>
+        </div>
+        <div class="nav-right">
+            <a href="index.html#services" class="nav-link" style="color:#fff;">Services</a>
+            <a href="index.html#contact" class="nav-link" style="color:#fff;">Contact</a>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" style="color:#fff;">
+            <span class="menu-text">menu</span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mob-menu" id="mobMenu">
+        <button class="mob-close" id="mobClose">close</button>
+        <div class="mob-inner">
+            <a href="index.html#projects" class="mob-link"><span>Projects</span></a>
+            <a href="index.html#about" class="mob-link"><span>About</span></a>
+            <a href="index.html#services" class="mob-link"><span>Services</span></a>
+            <a href="index.html#contact" class="mob-link"><span>Contact</span></a>
+        </div>
+        <div class="mob-bottom">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+        </div>
+    </div>
+
+    <!-- Project Hero -->
+    <section class="proj-hero">
+        <div class="proj-hero-bg"></div>
+        <div class="proj-hero-content">
+            <div class="proj-hero-title">
+                <span>Maison</span>
+            </div>
+            <div class="proj-hero-title">
+                <span style="animation-delay:0.32s">Élara</span>
+            </div>
+            <div class="proj-hero-meta">
+                <div class="proj-hero-info">
+                    <span class="proj-hero-cat">Identité visuelle</span>
+                    <span class="proj-hero-year">2025</span>
+                </div>
+                <a href="index.html#projects" class="proj-back">← Retour aux projets</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brief -->
+    <section class="proj-section">
+        <div class="proj-brief">
+            <div class="reveal">
+                <h2 class="proj-brief-title">Créer une<br>identité<br>intemporelle</h2>
+            </div>
+            <div class="reveal">
+                <p class="proj-brief-text">
+                    Maison Élara est une marque de joaillerie contemporaine parisienne.
+                    Le studio 11H16 a conçu l'ensemble de son identité visuelle :
+                    du logotype aux supports de communication, en passant par le packaging
+                    et la direction artistique des campagnes photographiques.
+                </p>
+                <p class="proj-brief-text" style="margin-top:16px;">
+                    L'objectif était de traduire l'élégance brute et la modernité
+                    de la maison à travers un langage visuel minimaliste mais
+                    profondément distinctif.
+                </p>
+                <div class="proj-details">
+                    <div class="proj-detail-item">
+                        <span class="proj-detail-label">Client</span>
+                        <span class="proj-detail-value">Maison Élara</span>
+                    </div>
+                    <div class="proj-detail-item">
+                        <span class="proj-detail-label">Services</span>
+                        <span class="proj-detail-value">Branding, DA, Print</span>
+                    </div>
+                    <div class="proj-detail-item">
+                        <span class="proj-detail-label">Année</span>
+                        <span class="proj-detail-value">2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full width image -->
+    <div class="proj-section" style="padding-top:0;">
+        <div class="proj-img-full reveal"></div>
+    </div>
+
+    <!-- Two column images -->
+    <div class="proj-section" style="padding-top:0;">
+        <div class="proj-img-grid reveal">
+            <div class="proj-img-half"></div>
+            <div class="proj-img-half"></div>
+        </div>
+    </div>
+
+    <!-- Quote -->
+    <section class="proj-quote reveal">
+        <p class="proj-quote-text">
+            <span>L'ÉLÉGANCE EST</span>
+            <span class="fat-outline">DANS LES DÉTAILS</span>
+        </p>
+        <p class="proj-quote-author">— Fondatrice, Maison Élara</p>
+    </section>
+
+    <!-- Wide image -->
+    <div class="proj-section" style="padding-top:0;">
+        <div class="proj-img-wide reveal"></div>
+    </div>
+
+    <!-- Two column images -->
+    <div class="proj-section" style="padding-top:0;">
+        <div class="proj-img-grid reveal">
+            <div class="proj-img-half" style="background:#181816;"></div>
+            <div class="proj-img-half" style="background:#22201c;"></div>
+        </div>
+    </div>
+
+    <!-- Next Project -->
+    <a href="project.html" class="proj-next">
+        <div>
+            <p class="proj-next-label">Projet suivant</p>
+            <h3 class="proj-next-title">Voltige</h3>
+        </div>
+        <span class="proj-next-cat">Direction artistique</span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span class="f-logo">11H16</span>
+        <span class="f-copy">&copy; 2026 — All rights reserved</span>
+        <span class="f-loc">Paris, FR</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
