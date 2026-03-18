@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11H16 — Portfolio Book</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Barlow+Condensed:wght@700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000;
+            --white: #fff;
+            --grey: #888;
+            --font-fat: 'Roboto Flex', sans-serif;
+            --font-body: 'Roboto Flex', sans-serif;
+            --fat-weight: 900;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ─── Main Layout ───────────────────────── */
+        .book-layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ─── Left: list ────────────────────────── */
+        .book-left {
+            width: 50%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .book-header {
+            padding: 32px 40px 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .book-header-logo { width: 60px; }
+
+        .book-header-settings {
+            margin-left: auto;
+            width: 32px; height: 32px;
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 50%;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--grey);
+            transition: background 0.15s;
+        }
+
+        .book-header-settings:hover { background: #f0f0f0; }
+
+        /* ─── Settings Panel ────────────────────── */
+        .book-settings {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .book-settings.open { opacity: 1; visibility: visible; }
+
+        .book-settings-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .book-settings-title {
+            font-family: var(--font-fat);
+            font-weight: var(--fat-weight);
+            font-stretch: 25%;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey);
+        }
+
+        .book-settings-close {
+            width: 36px; height: 36px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+
+        .book-settings-close:hover { background: #f0f0f0; }
+
+        .book-settings-list {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+            padding: 8px 0;
+        }
+
+        .book-settings-list::-webkit-scrollbar { display: none; }
+
+        .book-settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 32px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .book-settings-item:hover { background: #fafafa; }
+
+        .book-settings-item-name {
+            font-family: var(--font-fat);
+            font-weight: var(--fat-weight);
+            font-stretch: 25%;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .book-settings-item.disabled .book-settings-item-name {
+            opacity: 0.25;
+            text-decoration: line-through;
+        }
+
+        .book-toggle {
+            width: 40px; height: 22px;
+            border-radius: 11px;
+            background: #ddd;
+            position: relative;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .book-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--white);
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        .book-toggle.on { background: var(--black); }
+        .book-toggle.on::after { transform: translateX(18px); }
+
+        .book-settings-count {
+            padding: 16px 32px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            flex-shrink: 0;
+        }
+
+        .book-header-text {
+            font-family: var(--font-fat);
+            font-weight: var(--fat-weight);
+            font-stretch: 25%;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey);
+        }
+
+        .book-list {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+            padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
+            transform: translateZ(0);
+        }
+
+        .book-list::-webkit-scrollbar { display: none; }
+
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 14px 40px;
+            cursor: pointer;
+        }
+
+        .book-item.hidden { display: none; }
+
+        .book-list:hover .book-item {
+            opacity: 0.3;
+        }
+
+        .book-list:hover .book-item:hover {
+            opacity: 1;
+        }
+
+        .book-item-name {
+            font-family: var(--font-fat);
+            font-weight: var(--fat-weight);
+            font-stretch: 25%;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .book-item-type {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--grey);
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .book-count {
+            padding: 16px 40px 24px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey);
+            flex-shrink: 0;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* ─── Right: preview ────────────────────── */
+        .book-right {
+            width: 50%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-preview-placeholder {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ccc;
+            transition: opacity 0.3s ease;
+        }
+
+        .book-preview-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .book-preview-image.visible {
+            opacity: 1;
+        }
+
+        .book-preview-info {
+            position: absolute;
+            bottom: 32px;
+            left: 32px;
+            right: 32px;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.1s;
+        }
+
+        .book-preview-info.visible { opacity: 1; }
+
+        .book-preview-title {
+            font-family: var(--font-fat);
+            font-weight: var(--fat-weight);
+            font-stretch: 25%;
+            font-size: clamp(32px, 4vw, 56px);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 0.9;
+            color: var(--white);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+        }
+
+        .book-preview-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 12px;
+        }
+
+        .book-preview-meta span {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.8);
+            text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+        }
+
+        /* ─── Project Overlay ───────────────────── */
+        .book-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: var(--white);
+            overflow-y: auto;
+            scrollbar-width: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .book-overlay::-webkit-scrollbar { display: none; }
+        .book-overlay.open { opacity: 1; visibility: visible; }
+
+        .book-overlay-close {
+            position: fixed;
+            top: 28px; right: 28px;
+            z-index: 210;
+            width: 48px; height: 48px;
+            background: var(--white);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 300;
+            transition: transform 0.2s ease, background 0.2s ease;
+            opacity: 0; visibility: hidden;
+        }
+
+        .book-overlay.open .book-overlay-close {
+            opacity: 1; visibility: visible;
+            transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s, transform 0.2s ease, background 0.2s ease;
+        }
+
+        .book-overlay-close:hover { transform: scale(1.1); background: #f0f0f0; }
+
+        /* ─── Project content ───────────────────── */
+        .book-project { display: none; }
+        .book-project.active { display: block; }
+
+        .book-proj-header { padding: 120px 40px 60px; }
+
+        .book-proj-title {
+            font-family: var(--font-fat);
+            font-weight: var(--fat-weight);
+            font-stretch: 25%;
+            font-size: clamp(48px, 10vw, 140px);
+            line-height: 0.88;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .book-proj-meta {
+            display: flex;
+            gap: clamp(32px, 6vw, 100px);
+            margin-top: 40px; padding-top: 24px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .book-proj-detail { display: flex; flex-direction: column; gap: 4px; }
+
+        .book-proj-label {
+            font-size: 10px; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1.5px; color: var(--grey);
+        }
+
+        .book-proj-value { font-size: 14px; font-weight: 500; letter-spacing: 0.3px; }
+
+        .book-media-full { margin-bottom: clamp(8px, 1.5vw, 24px); }
+
+        .book-media-full video,
+        .book-media-full img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+        .book-media-full video { aspect-ratio: 16 / 9; background: #111; }
+
+        .book-media-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(8px, 1.5vw, 24px);
+            margin: 0 40px clamp(8px, 1.5vw, 24px);
+        }
+
+        .book-media-grid.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .book-media-grid.grid-1 { grid-template-columns: 1fr; }
+
+        .book-media-item { overflow: hidden; background: #f0f0f0; }
+
+        .book-media-item img,
+        .book-media-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .book-proj-bottom { height: 80px; }
+
+        /* ─── Responsive ────────────────────────── */
+        @media (max-width: 900px) {
+            .book-left { width: 100%; }
+            .book-right { display: none; }
+            .book-proj-meta { flex-direction: column; gap: 16px; }
+            .book-media-grid { grid-template-columns: 1fr; margin: 0 24px clamp(8px, 2vw, 16px); }
+            .book-media-grid.grid-3 { grid-template-columns: 1fr; }
+            .book-overlay-close { top: 16px; right: 16px; width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Settings Panel -->
+    <div class="book-settings" id="bookSettings">
+        <div class="book-settings-header">
+            <span class="book-settings-title">Manage Projects</span>
+            <button class="book-settings-close" id="settingsClose">&times;</button>
+        </div>
+        <div class="book-settings-list" id="settingsList"></div>
+        <div class="book-settings-count" id="settingsCount"></div>
+    </div>
+
+    <div class="book-layout">
+        <!-- Left: scrollable list -->
+        <div class="book-left">
+            <div class="book-header">
+                <img src="assets/logo.png" alt="11H16" class="book-header-logo">
+                <span class="book-header-text">Portfolio 2026</span>
+                <button class="book-header-settings" id="settingsBtn" title="Manage projects">&#9881;</button>
+            </div>
+            <div class="book-list" id="bookList">
+                <div class="book-item" data-project="almajed" data-video="assets/projects/almajed_film.mp4" data-thumb="assets/projects/ALMAJED_BOISEE_KV_2_16x9_V1.jpg" data-title="Almajed Boisée" data-type="Film & Key Visuals" data-client="Almajed Oud"><span class="book-item-name">Almajed Boisée</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="bucherer" data-video="assets/projects/bucherer_film.mp4" data-thumb="assets/projects/BUCHERER_NOEL_KV_RINGS_VERTICAL_V1.jpg" data-title="Bucherer Noël" data-type="Campagne & Capsules" data-client="Bucherer"><span class="book-item-name">Bucherer Noël</span><span class="book-item-type">Campagne & Capsules</span></div>
+                <div class="book-item" data-project="marcjacobs" data-video="assets/projects/marcjacobs_film.mp4" data-thumb="assets/projects/MARC_JACOBS_DAISY_CAPTURE_3_16x9_V1.jpg" data-title="Marc Jacobs Daisy" data-type="Film & Direction Artistique" data-client="Marc Jacobs"><span class="book-item-name">Marc Jacobs Daisy</span><span class="book-item-type">Film & Direction Artistique</span></div>
+                <div class="book-item" data-project="gucci" data-video="assets/projects/gucci_film.mp4" data-thumb="assets/projects/GUCCI_RD_CAPTURE_3_17x24_V1.jpg" data-title="Gucci" data-type="Capture & Film" data-client="Gucci"><span class="book-item-name">Gucci</span><span class="book-item-type">Capture & Film</span></div>
+                <div class="book-item" data-project="coperni" data-video="assets/projects/coperni_film.mp4" data-thumb="assets/projects/COPERNI_KV_2.png" data-title="Coperni Foot Print" data-type="Film & Key Visuals" data-client="Coperni"><span class="book-item-name">Coperni Foot Print</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="drjart" data-video="" data-thumb="assets/projects/DR_JART_SKIN_KV_01-Korean_Skincare_16x9_V1.jpg" data-title="Dr. Jart+ Skincare" data-type="Key Visuals Skincare" data-client="Dr. Jart+"><span class="book-item-name">Dr. Jart+</span><span class="book-item-type">Key Visuals Skincare</span></div>
+                <div class="book-item" data-project="jhag" data-video="assets/projects/jhag_film.mp4" data-thumb="assets/projects/JHAG_POWDERLOVE_CAPTURE_4_16X9_V1.jpg" data-title="JHAG Powder Love" data-type="Capture & Direction Artistique" data-client="Juliette Has A Gun"><span class="book-item-name">JHAG Powder Love</span><span class="book-item-type">Capture & Direction Artistique</span></div>
+                <div class="book-item" data-project="elevensixtine" data-video="assets/projects/eleven_sixtine_film.mp4" data-thumb="assets/projects/ELEVEN_SIXTINE_CAPTURE_1.jpg" data-title="Eleven Sixtine" data-type="Film & Capture" data-client="11H16"><span class="book-item-name">Eleven Sixtine</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="musee" data-video="assets/projects/musee_film.mp4" data-thumb="assets/projects/MUSEE_CAPTURE_3.jpg" data-title="Musée" data-type="Film & Capture" data-client="11H16"><span class="book-item-name">Musée</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="poche" data-video="assets/projects/poche_film.mp4" data-thumb="assets/projects/POCHE_CAPTURE_3.jpg" data-title="Poche" data-type="Film & Capture" data-client="11H16"><span class="book-item-name">Poche</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="viktorrolf" data-video="assets/projects/viktorrolf_film.mp4" data-thumb="assets/projects/VIKTOR_ROLF_KV_1.jpg" data-title="Viktor &amp; Rolf Flowerbomb" data-type="Key Visuals & Capture" data-client="Viktor & Rolf"><span class="book-item-name">Viktor & Rolf Flowerbomb</span><span class="book-item-type">Key Visuals & Capture</span></div>
+                <div class="book-item" data-project="valentino" data-video="assets/projects/valentino_film.mp4" data-thumb="assets/projects/VALENTINO_CAPTURE_1.jpg" data-title="Valentino Beauty" data-type="Film & Capture" data-client="Valentino"><span class="book-item-name">Valentino Beauty</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="givenchy" data-video="" data-thumb="assets/projects/GIVENCHY_LINTERDIT_KV_1.png" data-title="Givenchy" data-type="Key Visuals" data-client="Givenchy"><span class="book-item-name">Givenchy</span><span class="book-item-type">Key Visuals</span></div>
+                <div class="book-item" data-project="givenchy-ri" data-video="assets/projects/givenchy-ri_film.mp4" data-thumb="assets/projects/givenchy-ri_capture_1.jpg" data-title="Givenchy RI" data-type="Film & Capture" data-client="Givenchy"><span class="book-item-name">Givenchy RI</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="burberry" data-video="assets/projects/burberry_film.mp4" data-thumb="assets/projects/burberry_capture_1.jpg" data-title="Burberry" data-type="Film & Key Visuals" data-client="Burberry"><span class="book-item-name">Burberry</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="dior" data-video="assets/projects/dior_film.mp4" data-thumb="assets/projects/dior_capture_1.jpg" data-title="Dior" data-type="Film & Capture" data-client="Dior"><span class="book-item-name">Dior</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="cartier" data-video="assets/projects/cartier_film.mp4" data-thumb="assets/projects/cartier_capture_1.jpg" data-title="Cartier" data-type="Film" data-client="Cartier"><span class="book-item-name">Cartier</span><span class="book-item-type">Film</span></div>
+                <div class="book-item" data-project="louboutin" data-video="assets/projects/louboutin_film.mp4" data-thumb="assets/projects/louboutin_kv_1.jpg" data-title="Louboutin" data-type="Campagne & Édito" data-client="Louboutin"><span class="book-item-name">Louboutin</span><span class="book-item-type">Campagne & Édito</span></div>
+                <div class="book-item" data-project="diesel" data-video="assets/projects/diesel_film.mp4" data-thumb="assets/projects/diesel_kv_1.png" data-title="Diesel" data-type="Film & Key Visuals" data-client="Diesel"><span class="book-item-name">Diesel</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="byredo" data-video="assets/projects/byredo_film.mp4" data-thumb="assets/projects/byredo_capture_1.jpg" data-title="Byredo" data-type="Film & Capture" data-client="Byredo"><span class="book-item-name">Byredo</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="dom-perignon" data-video="" data-thumb="assets/projects/dom-perignon_kv_1.jpg" data-title="Dom Pérignon" data-type="Key Visuals" data-client="Dom Pérignon"><span class="book-item-name">Dom Pérignon</span><span class="book-item-type">Key Visuals</span></div>
+                <div class="book-item" data-project="la-colline" data-video="assets/projects/la-colline_film.mp4" data-thumb="assets/projects/la-colline_kv_1.png" data-title="La Colline" data-type="Film & Key Visuals" data-client="La Colline"><span class="book-item-name">La Colline</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="hajar" data-video="assets/projects/hajar_film.mp4" data-thumb="assets/projects/hajar_kv_1.png" data-title="Hajar" data-type="Film & Key Visuals" data-client="Hajar"><span class="book-item-name">Hajar</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="paulas-choice" data-video="assets/projects/paulas-choice_film.mp4" data-thumb="assets/projects/paulas-choice_capture_1.jpg" data-title="Paula's Choice" data-type="Film & Capture" data-client="Paula's Choice"><span class="book-item-name">Paula's Choice</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="rimowa" data-video="assets/projects/rimowa_film.mp4" data-thumb="assets/projects/rimowa_capture_1.jpg" data-title="Rimowa" data-type="Film & Capture" data-client="Rimowa"><span class="book-item-name">Rimowa</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="staud" data-video="" data-thumb="assets/projects/staud_kv_1.jpg" data-title="Staud" data-type="Key Visuals" data-client="Staud"><span class="book-item-name">Staud</span><span class="book-item-type">Key Visuals</span></div>
+                <div class="book-item" data-project="maitrepierre" data-video="assets/projects/maitrepierre_film.mp4" data-thumb="assets/projects/maitrepierre_capture_1.jpg" data-title="Maitrepierre" data-type="Film & Capture" data-client="Maitrepierre"><span class="book-item-name">Maitrepierre</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="mini" data-video="assets/projects/mini_film.mp4" data-thumb="assets/projects/mini_kv_1.png" data-title="Mini" data-type="Film & Key Visuals" data-client="Mini"><span class="book-item-name">Mini</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="fortnite" data-video="assets/projects/fortnite_film.mp4" data-thumb="assets/projects/fortnite_kv_1.jpg" data-title="Fortnite" data-type="Film & Key Visuals" data-client="Epic Games"><span class="book-item-name">Fortnite</span><span class="book-item-type">Film & Key Visuals</span></div>
+                <div class="book-item" data-project="gymshark" data-video="assets/projects/gymshark_film.mp4" data-thumb="assets/projects/gymshark_capture_1.jpg" data-title="Gymshark" data-type="Film & Capture" data-client="Gymshark"><span class="book-item-name">Gymshark</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="adidas" data-video="assets/projects/adidas_film.mp4" data-thumb="assets/projects/adidas_capture_1.jpg" data-title="Adidas" data-type="Film & Capture" data-client="Adidas"><span class="book-item-name">Adidas</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="red-bull" data-video="assets/projects/red-bull_film.mp4" data-thumb="assets/projects/red-bull_capture_1.jpg" data-title="Red Bull" data-type="Film & Capture" data-client="Red Bull"><span class="book-item-name">Red Bull</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="wilson" data-video="assets/projects/wilson_film.mp4" data-thumb="assets/projects/wilson_capture_1.jpg" data-title="Wilson" data-type="Film & Capture" data-client="Wilson"><span class="book-item-name">Wilson</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="decathlon" data-video="assets/projects/decathlon_film.mp4" data-thumb="assets/projects/decathlon_capture_1.jpg" data-title="Decathlon" data-type="Film" data-client="Decathlon"><span class="book-item-name">Decathlon</span><span class="book-item-type">Film</span></div>
+                <div class="book-item" data-project="chivas" data-video="" data-thumb="assets/projects/chivas_kv_1.jpg" data-title="Chivas" data-type="Key Visuals" data-client="Chivas"><span class="book-item-name">Chivas</span><span class="book-item-type">Key Visuals</span></div>
+                <div class="book-item" data-project="remy-martin" data-video="assets/projects/remy-martin_film.mp4" data-thumb="assets/projects/remy-martin_capture_1.jpg" data-title="Rémy Martin" data-type="Film & Capture" data-client="Rémy Martin"><span class="book-item-name">Rémy Martin</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="ace-club" data-video="assets/projects/ace-club_film.mp4" data-thumb="assets/projects/ace-club_capture_1.jpg" data-title="Ace Club" data-type="Film & Capture" data-client="Ace Club"><span class="book-item-name">Ace Club</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="martin-solveig" data-video="assets/projects/martin-solveig_film.mp4" data-thumb="assets/projects/martin-solveig_capture_1.jpg" data-title="Martin Solveig" data-type="Film & Capture" data-client="Martin Solveig"><span class="book-item-name">Martin Solveig</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="aamour-ocean" data-video="assets/projects/aamour-ocean_film.mp4" data-thumb="assets/projects/aamour-ocean_capture_1.jpg" data-title="Aamour Océan" data-type="Film & Capture" data-client="Aamour Océan"><span class="book-item-name">Aamour Océan</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="wsn" data-video="assets/projects/wsn_film.mp4" data-thumb="assets/projects/wsn_capture_1.jpg" data-title="WSN" data-type="Film & Capture" data-client="WSN"><span class="book-item-name">WSN</span><span class="book-item-type">Film & Capture</span></div>
+                <div class="book-item" data-project="rhyme" data-video="" data-thumb="assets/projects/rhyme_kv_1.png" data-title="Rhyme" data-type="Key Visuals" data-client="Rhyme"><span class="book-item-name">Rhyme</span><span class="book-item-type">Key Visuals</span></div>
+                <div class="book-item" data-project="playground" data-video="assets/projects/playground_film.mp4" data-thumb="assets/projects/playground_kv_1.png" data-title="Playground" data-type="Direction Artistique" data-client="11H16"><span class="book-item-name">Playground</span><span class="book-item-type">Direction Artistique</span></div>
+            </div>
+            <div class="book-count">42 Projects — Creative CGI Studio, Paris</div>
+        </div>
+
+        <!-- Right: preview -->
+        <div class="book-right" id="bookRight">
+            <span class="book-preview-placeholder" id="previewPlaceholder">Hover a project</span>
+            <img class="book-preview-image" id="previewImage" src="" alt="">
+            <div class="book-preview-info" id="previewInfo">
+                <div class="book-preview-title" id="previewTitle"></div>
+                <div class="book-preview-meta">
+                    <span id="previewClient"></span>
+                    <span id="previewType"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROJECT OVERLAY -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="book-overlay" id="bookOverlay">
+        <button class="book-overlay-close" id="bookClose">&times;</button>
+
+        <div class="book-project" id="almajed">
+            <div class="book-proj-header"><h2 class="book-proj-title">Almajed<br>Boisée</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Almajed Oud</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/almajed_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/ALMAJED_BOISEE_KV_2_16x9_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/ALMAJED_BOISEE_KV_3_16x9_V1.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="bucherer">
+            <div class="book-proj-header"><h2 class="book-proj-title">Bucherer<br>Noël</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Bucherer</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Campagne & Capsules</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/bucherer_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/BUCHERER_NOEL_KV_RINGS_VERTICAL_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/BUCHERER_NOEL_KV_WATCHES_VERTICAL_V1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/BUCHERER_NOEL_CAPTURE_1_16x9_V1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/BUCHERER_NOEL_CAPTURE_4_16x9_V1.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="marcjacobs">
+            <div class="book-proj-header"><h2 class="book-proj-title">Marc Jacobs<br>Daisy</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Marc Jacobs</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Direction Artistique</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/marcjacobs_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/MARC_JACOBS_DAISY_CAPTURE_1_16x9_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/MARC_JACOBS_DAISY_CAPTURE_2_16x9_V1.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/MARC_JACOBS_DAISY_CAPTURE_3_16x9_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/MARC_JACOBS_DAISY_CAPTURE_4_16x9_V1.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="gucci">
+            <div class="book-proj-header"><h2 class="book-proj-title">Gucci</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Gucci</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Capture & Film</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/gucci_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/GUCCI_RD_CAPTURE_1_17x24_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/GUCCI_RD_CAPTURE_2_17x24_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/GUCCI_RD_CAPTURE_3_17x24_V1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/GUCCI_RD_CAPTURE_4_17x24_V1.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="coperni">
+            <div class="book-proj-header"><h2 class="book-proj-title">Coperni<br>Foot Print</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Coperni</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/coperni_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/COPERNI_KV_2.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/COPERNI_KV_3.png" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="drjart">
+            <div class="book-proj-header"><h2 class="book-proj-title">Dr. Jart+<br>Skincare</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Dr. Jart+</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals Skincare</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/DR_JART_SKIN_KV_01-Korean_Skincare_16x9_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/DR_JART_SKIN_KV_02-Korean_Skincare_16x9_V1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/DR_JART_SKIN_KV_03-Korean_Layering_16x9_V1.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="jhag">
+            <div class="book-proj-header"><h2 class="book-proj-title">JHAG<br>Powder Love</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Juliette Has A Gun</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Capture & Direction Artistique</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/JHAG_POWDERLOVE_CAPTURE_1_16X9_V1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/JHAG_POWDERLOVE_CAPTURE_4_16X9_V1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/JHAG_POWDERLOVE_CAPTURE_5_16X9_V1.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="elevensixtine">
+            <div class="book-proj-header"><h2 class="book-proj-title">Eleven<br>Sixtine</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">11H16</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/eleven_sixtine_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/ELEVEN_SIXTINE_CAPTURE_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/ELEVEN_SIXTINE_CAPTURE_2.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/ELEVEN_SIXTINE_CAPTURE_3.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/ELEVEN_SIXTINE_CAPTURE_4.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="musee">
+            <div class="book-proj-header"><h2 class="book-proj-title">Musée</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">11H16</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/musee_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/MUSEE_CAPTURE_1.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/MUSEE_CAPTURE_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/MUSEE_CAPTURE_3.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/MUSEE_CAPTURE_4.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="poche">
+            <div class="book-proj-header"><h2 class="book-proj-title">Poche</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">11H16</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/poche_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/POCHE_CAPTURE_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/POCHE_CAPTURE_2.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/POCHE_CAPTURE_3.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/POCHE_CAPTURE_4.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="viktorrolf">
+            <div class="book-proj-header"><h2 class="book-proj-title">Viktor & Rolf<br>Flowerbomb</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Viktor & Rolf</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/viktorrolf_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/VIKTOR_ROLF_KV_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/VIKTOR_ROLF_KV_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/VIKTOR_ROLF_KV_3.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/VIKTOR_ROLF_CAPTURE_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/VIKTOR_ROLF_CAPTURE_2.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/VIKTOR_ROLF_CAPTURE_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="valentino">
+            <div class="book-proj-header"><h2 class="book-proj-title">Valentino<br>Beauty</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Valentino</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/valentino_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/VALENTINO_CAPTURE_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/VALENTINO_CAPTURE_2.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/VALENTINO_CAPTURE_3.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/VALENTINO_CAPTURE_4.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="givenchy">
+            <div class="book-proj-header"><h2 class="book-proj-title">Givenchy</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Givenchy</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/GIVENCHY_IRRESISTIBLE_KV_3.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/GIVENCHY_LINTERDIT_KV_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/GIVENCHY_LINTERDIT_KV_2.png" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+        <div class="book-project" id="givenchy-ri">
+            <div class="book-proj-header"><h2 class="book-proj-title">Givenchy<br>RI</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Givenchy</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/givenchy-ri_film.mp4" type="video/mp4"></video></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="burberry">
+            <div class="book-proj-header"><h2 class="book-proj-title">Burberry</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Burberry</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/burberry_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/burberry_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/burberry_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/burberry_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="dior">
+            <div class="book-proj-header"><h2 class="book-proj-title">Dior</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Dior</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/dior_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/dior_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/dior_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/dior_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="cartier">
+            <div class="book-proj-header"><h2 class="book-proj-title">Cartier</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Cartier</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/cartier_film.mp4" type="video/mp4"></video></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="louboutin">
+            <div class="book-proj-header"><h2 class="book-proj-title">Louboutin</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Louboutin</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Campagne & Édito</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/louboutin_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/louboutin_kv_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/louboutin_kv_2.jpg" loading="lazy"></div></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/louboutin_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/louboutin_capture_2.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="diesel">
+            <div class="book-proj-header"><h2 class="book-proj-title">Diesel</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Diesel</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/diesel_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/diesel_kv_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/diesel_kv_2.png" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="byredo">
+            <div class="book-proj-header"><h2 class="book-proj-title">Byredo</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Byredo</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/byredo_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/byredo_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/byredo_capture_2.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="dom-perignon">
+            <div class="book-proj-header"><h2 class="book-proj-title">Dom<br>Pérignon</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Dom Pérignon</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/dom-perignon_kv_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/dom-perignon_kv_2.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="la-colline">
+            <div class="book-proj-header"><h2 class="book-proj-title">La Colline</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">La Colline</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/la-colline_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/la-colline_kv_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/la-colline_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/la-colline_capture_2.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="hajar">
+            <div class="book-proj-header"><h2 class="book-proj-title">Hajar</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Hajar</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/hajar_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/hajar_kv_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/hajar_capture_1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/hajar_capture_2.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="paulas-choice">
+            <div class="book-proj-header"><h2 class="book-proj-title">Paula's<br>Choice</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Paula's Choice</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/paulas-choice_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/paulas-choice_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/paulas-choice_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/paulas-choice_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="rimowa">
+            <div class="book-proj-header"><h2 class="book-proj-title">Rimowa</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Rimowa</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/rimowa_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/rimowa_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/rimowa_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/rimowa_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="staud">
+            <div class="book-proj-header"><h2 class="book-proj-title">Staud</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Staud</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/staud_kv_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/staud_kv_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/staud_kv_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="maitrepierre">
+            <div class="book-proj-header"><h2 class="book-proj-title">Maitrepierre</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Maitrepierre</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/maitrepierre_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/maitrepierre_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/maitrepierre_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/maitrepierre_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="mini">
+            <div class="book-proj-header"><h2 class="book-proj-title">Mini</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Mini</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/mini_film.mp4" type="video/mp4"></video></div><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/mini_kv_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/mini_capture_1.jpg" loading="lazy"></div></div><div class="book-media-grid grid-1"><div class="book-media-item"><img src="assets/projects/mini_capture_2.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="fortnite">
+            <div class="book-proj-header"><h2 class="book-proj-title">Fortnite</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Epic Games</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/fortnite_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/fortnite_kv_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/fortnite_kv_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/fortnite_kv_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="gymshark">
+            <div class="book-proj-header"><h2 class="book-proj-title">Gymshark</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Gymshark</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/gymshark_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/gymshark_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/gymshark_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/gymshark_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="adidas">
+            <div class="book-proj-header"><h2 class="book-proj-title">Adidas</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Adidas</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/adidas_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/adidas_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/adidas_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/adidas_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="red-bull">
+            <div class="book-proj-header"><h2 class="book-proj-title">Red Bull</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Red Bull</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/red-bull_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/red-bull_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/red-bull_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/red-bull_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="wilson">
+            <div class="book-proj-header"><h2 class="book-proj-title">Wilson</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Wilson</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/wilson_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/wilson_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/wilson_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/wilson_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="decathlon">
+            <div class="book-proj-header"><h2 class="book-proj-title">Decathlon</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Decathlon</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/decathlon_film.mp4" type="video/mp4"></video></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="chivas">
+            <div class="book-proj-header"><h2 class="book-proj-title">Chivas</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Chivas</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/chivas_kv_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/chivas_kv_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/chivas_kv_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="remy-martin">
+            <div class="book-proj-header"><h2 class="book-proj-title">Rémy<br>Martin</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Rémy Martin</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/remy-martin_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/remy-martin_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/remy-martin_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/remy-martin_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="ace-club">
+            <div class="book-proj-header"><h2 class="book-proj-title">Ace Club</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Ace Club</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/ace-club_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/ace-club_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/ace-club_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/ace-club_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="martin-solveig">
+            <div class="book-proj-header"><h2 class="book-proj-title">Martin<br>Solveig</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Martin Solveig</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/martin-solveig_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/martin-solveig_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/martin-solveig_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/martin-solveig_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="aamour-ocean">
+            <div class="book-proj-header"><h2 class="book-proj-title">Aamour<br>Océan</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Aamour Océan</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/aamour-ocean_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/aamour-ocean_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/aamour-ocean_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/aamour-ocean_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="wsn">
+            <div class="book-proj-header"><h2 class="book-proj-title">WSN</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">WSN</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Film & Capture</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/wsn_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/wsn_capture_1.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/wsn_capture_2.jpg" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/wsn_capture_3.jpg" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="rhyme">
+            <div class="book-proj-header"><h2 class="book-proj-title">Rhyme</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">Rhyme</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Key Visuals</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-grid"><div class="book-media-item"><img src="assets/projects/rhyme_kv_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/rhyme_kv_2.png" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+
+        <div class="book-project" id="playground">
+            <div class="book-proj-header"><h2 class="book-proj-title">Playground</h2><div class="book-proj-meta"><div class="book-proj-detail"><span class="book-proj-label">Client</span><span class="book-proj-value">11H16</span></div><div class="book-proj-detail"><span class="book-proj-label">Type</span><span class="book-proj-value">Direction Artistique</span></div><div class="book-proj-detail"><span class="book-proj-label">Year</span><span class="book-proj-value">2026</span></div></div></div>
+            <div class="book-media"><div class="book-media-full"><video muted loop playsinline><source src="assets/projects/playground_film.mp4" type="video/mp4"></video></div><div class="book-media-grid grid-3"><div class="book-media-item"><img src="assets/projects/playground_kv_1.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/playground_kv_2.png" loading="lazy"></div><div class="book-media-item"><img src="assets/projects/playground_kv_3.png" loading="lazy"></div></div></div><div class="book-proj-bottom"></div>
+        </div>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('bookOverlay');
+        const closeBtn = document.getElementById('bookClose');
+        const previewImage = document.getElementById('previewImage');
+        const previewInfo = document.getElementById('previewInfo');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewClient = document.getElementById('previewClient');
+        const previewType = document.getElementById('previewType');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const items = document.querySelectorAll('.book-item');
+        const allProjects = document.querySelectorAll('.book-project');
+
+        // Disable hover during scroll
+        let isScrolling = false;
+        let scrollTimer = null;
+        document.getElementById('bookList').addEventListener('scroll', () => {
+            isScrolling = true;
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => { isScrolling = false; }, 150);
+        }, { passive: true });
+
+        // Hover preview — image only
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                if (isScrolling) return;
+                const thumb = item.dataset.thumb;
+
+                items.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                previewPlaceholder.style.opacity = '0';
+                previewTitle.textContent = item.dataset.title;
+                previewClient.textContent = item.dataset.client;
+                previewType.textContent = item.dataset.type;
+
+                if (thumb) {
+                    previewImage.src = thumb;
+                    previewImage.classList.add('visible');
+                }
+                previewInfo.classList.add('visible');
+            });
+
+            item.addEventListener('mouseleave', () => {
+                if (isScrolling) return;
+                item.classList.remove('active');
+                previewImage.classList.remove('visible');
+                previewInfo.classList.remove('visible');
+                previewPlaceholder.style.opacity = '1';
+            });
+
+            // Click to open project
+            item.addEventListener('click', () => {
+                const id = item.dataset.project;
+                allProjects.forEach(p => p.classList.remove('active'));
+                const target = document.getElementById(id);
+                if (!target) return;
+                target.classList.add('active');
+                overlay.scrollTop = 0;
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                target.querySelectorAll('video').forEach(v => v.play().catch(() => {}));
+            });
+        });
+
+        // Close
+        function closeOverlay() {
+            overlay.classList.remove('open');
+            document.body.style.overflow = 'hidden'; // keep body locked (split layout)
+            allProjects.forEach(p => p.querySelectorAll('video').forEach(v => v.pause()));
+            setTimeout(() => allProjects.forEach(p => p.classList.remove('active')), 400);
+        }
+
+        closeBtn.addEventListener('click', closeOverlay);
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (overlay.classList.contains('open')) closeOverlay();
+                else if (settingsPanel.classList.contains('open')) settingsPanel.classList.remove('open');
+            }
+        });
+
+        // ─── Settings Panel ─────────────────────
+        const settingsPanel = document.getElementById('bookSettings');
+        const settingsList = document.getElementById('settingsList');
+        const settingsCount = document.getElementById('settingsCount');
+        const bookCount = document.querySelector('.book-count');
+
+        // Load state from localStorage
+        const STORAGE_KEY = 'book_hidden_projects';
+        let hiddenProjects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+        function applyVisibility() {
+            items.forEach(item => {
+                const id = item.dataset.project;
+                item.classList.toggle('hidden', hiddenProjects.includes(id));
+            });
+            const visible = items.length - hiddenProjects.length;
+            bookCount.textContent = visible + ' Projects — Creative CGI Studio, Paris';
+            settingsCount.textContent = visible + ' / ' + items.length + ' projects visible';
+        }
+
+        function buildSettingsList() {
+            settingsList.innerHTML = '';
+            items.forEach(item => {
+                const id = item.dataset.project;
+                const name = item.dataset.title;
+                const isHidden = hiddenProjects.includes(id);
+
+                const row = document.createElement('div');
+                row.className = 'book-settings-item' + (isHidden ? ' disabled' : '');
+
+                const label = document.createElement('span');
+                label.className = 'book-settings-item-name';
+                label.textContent = name;
+
+                const toggle = document.createElement('div');
+                toggle.className = 'book-toggle' + (isHidden ? '' : ' on');
+
+                row.appendChild(label);
+                row.appendChild(toggle);
+
+                row.addEventListener('click', () => {
+                    if (hiddenProjects.includes(id)) {
+                        hiddenProjects = hiddenProjects.filter(p => p !== id);
+                    } else {
+                        hiddenProjects.push(id);
+                    }
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(hiddenProjects));
+                    toggle.classList.toggle('on');
+                    row.classList.toggle('disabled');
+                    applyVisibility();
+                });
+
+                settingsList.appendChild(row);
+            });
+        }
+
+        // Open settings
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            buildSettingsList();
+            applyVisibility();
+            settingsPanel.classList.add('open');
+        });
+
+        // Close settings
+        document.getElementById('settingsClose').addEventListener('click', () => {
+            settingsPanel.classList.remove('open');
+        });
+
+        // Apply on load
+        applyVisibility();
+    </script>
+</body>
+</html>

@@ -48,13 +48,13 @@ function getAdjacentProjects($currentOrder) {
 function saveProject($data, $id = null) {
     $db = getDB();
     if ($id) {
-        $stmt = $db->prepare('UPDATE projects SET slug=?, name=?, title_html=?, client=?, type=?, year=?, thumbnail=?, is_wide=?, is_hero=?, hero_video=? WHERE id=?');
-        $stmt->execute([$data['slug'], $data['name'], $data['title_html'], $data['client'], $data['type'], $data['year'], $data['thumbnail'], $data['is_wide'], $data['is_hero'], $data['hero_video'], $id]);
+        $stmt = $db->prepare('UPDATE projects SET slug=?, name=?, title_html=?, client=?, type=?, year=?, thumbnail=?, is_wide=?, is_hero=?, hero_video=?, preview_video=? WHERE id=?');
+        $stmt->execute([$data['slug'], $data['name'], $data['title_html'], $data['client'], $data['type'], $data['year'], $data['thumbnail'], $data['is_wide'], $data['is_hero'], $data['hero_video'], $data['preview_video'] ?? null, $id]);
         return $id;
     } else {
         $maxOrder = $db->query('SELECT COALESCE(MAX(display_order), 0) FROM projects')->fetchColumn();
-        $stmt = $db->prepare('INSERT INTO projects (slug, name, title_html, client, type, year, thumbnail, is_wide, is_hero, hero_video, display_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$data['slug'], $data['name'], $data['title_html'], $data['client'], $data['type'], $data['year'], $data['thumbnail'], $data['is_wide'], $data['is_hero'], $data['hero_video'], $maxOrder + 1]);
+        $stmt = $db->prepare('INSERT INTO projects (slug, name, title_html, client, type, year, thumbnail, is_wide, is_hero, hero_video, preview_video, display_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$data['slug'], $data['name'], $data['title_html'], $data['client'], $data['type'], $data['year'], $data['thumbnail'], $data['is_wide'], $data['is_hero'], $data['hero_video'], $data['preview_video'] ?? null, $maxOrder + 1]);
         return $db->lastInsertId();
     }
 }

@@ -7,10 +7,20 @@
     <meta name="description" content="11H16 — Creative Studio based in Paris. In House Human Creativity.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Barlow+Condensed:wght@700&family=Bebas+Neue&&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Splash Screen -->
+    <div class="splash" id="splash">
+        <div class="splash-text">
+            <span class="splash-word" style="--d:0">CREATING FOR</span>
+            <span class="splash-word" style="--d:1">TOMORROW WITH</span>
+            <span class="splash-word" style="--d:2">TOOLS OF TODAY</span>
+        </div>
+        <div class="splash-sub">CREATIVE CGI STUDIO</div>
+    </div>
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
@@ -22,7 +32,7 @@
             <a href="#about" class="nav-link">About</a>
         </div>
         <div class="nav-right">
-            <a href="#services" class="nav-link">Services</a>
+            <a href="#about" class="nav-link">Services</a>
             <a href="#contact" class="nav-link">Contact</a>
         </div>
         <button class="menu-btn" id="menuBtn" aria-label="Menu">
@@ -36,7 +46,7 @@
         <div class="mob-inner">
             <a href="#projects" class="mob-link"><span>Projects</span></a>
             <a href="#about" class="mob-link"><span>About</span></a>
-            <a href="#services" class="mob-link"><span>Services</span></a>
+            <a href="#about" class="mob-link"><span>Services</span></a>
             <a href="#contact" class="mob-link"><span>Contact</span></a>
         </div>
         <div class="mob-bottom">
@@ -57,14 +67,14 @@
             <source src="assets/projects/bucherer_film.mp4" type="video/mp4">
         </video>
         <div class="hero-text">
-            <div class="hero-line"><span class="hero-word" style="--d:0">IN HOUSE</span></div>
-            <div class="hero-line"><span class="hero-word" style="--d:1">HUMAN</span></div>
-            <div class="hero-line"><span class="hero-word" style="--d:2">CREATIVITY</span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:0">CREATING FOR</span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:1">TOMORROW WITH</span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:2">TOOLS OF TODAY</span></div>
         </div>
         <div class="hero-sub">
             <h1 class="hero-desc">
                 Creative CGI Studio,<br>
-                Creating for tomorrow with tools of today.
+                In House Creativity.
             </h1>
             <p class="hero-tags">CGI. AI. VFX. Production. Creative Direction.</p>
         </div>
@@ -88,6 +98,7 @@
         <div class="proj-grid">
             <a href="project-almajed.html" class="proj reveal" style="--i:0">
                 <div class="proj-img" style="background-image:url('assets/projects/ALMAJED_BOISEE_KV_4_16x9_V1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/almajed_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Almajed Boisée</span>
                     <span class="proj-cat">Film & Key Visuals</span>
@@ -95,6 +106,7 @@
             </a>
             <a href="project-bucherer.html" class="proj reveal" style="--i:1">
                 <div class="proj-img" style="background-image:url('assets/projects/BUCHERER_NOEL_KV_RINGS_VERTICAL_V1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/bucherer_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Bucherer Noël</span>
                     <span class="proj-cat">Campagne & Capsules</span>
@@ -102,6 +114,7 @@
             </a>
             <a href="project-marcjacobs.html" class="proj proj--wide reveal" style="--i:2">
                 <div class="proj-img" style="background-image:url('assets/projects/MARC_JACOBS_DAISY_CAPTURE_3_16x9_V1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/marcjacobs_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Marc Jacobs Daisy</span>
                     <span class="proj-cat">Film & Direction Artistique</span>
@@ -109,6 +122,7 @@
             </a>
             <a href="project-gucci.html" class="proj reveal" style="--i:3">
                 <div class="proj-img" style="background-image:url('assets/projects/GUCCI_RD_CAPTURE_3_17x24_V1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/gucci_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Gucci</span>
                     <span class="proj-cat">Capture & Film</span>
@@ -116,6 +130,7 @@
             </a>
             <a href="project-coperni.html" class="proj reveal" style="--i:4">
                 <div class="proj-img" style="background-image:url('assets/projects/COPERNI_KV_2.png');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/coperni_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Coperni Foot Print</span>
                     <span class="proj-cat">Film & Key Visuals</span>
@@ -130,6 +145,7 @@
             </a>
             <a href="project-jhag.html" class="proj reveal" style="--i:6">
                 <div class="proj-img" style="background-image:url('assets/projects/JHAG_POWDERLOVE_CAPTURE_4_16X9_V1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/jhag_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">JHAG Powder Love</span>
                     <span class="proj-cat">Capture & Direction Artistique</span>
@@ -137,6 +153,7 @@
             </a>
             <a href="project-elevensixtine.html" class="proj reveal" style="--i:7">
                 <div class="proj-img" style="background-image:url('assets/projects/ELEVEN_SIXTINE_CAPTURE_1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/eleven_sixtine_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Eleven Sixtine</span>
                     <span class="proj-cat">Film & Capture</span>
@@ -144,6 +161,7 @@
             </a>
             <a href="project-musee.html" class="proj reveal" style="--i:8">
                 <div class="proj-img" style="background-image:url('assets/projects/MUSEE_CAPTURE_3.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/musee_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Musée</span>
                     <span class="proj-cat">Film & Capture</span>
@@ -151,6 +169,7 @@
             </a>
             <a href="project-poche.html" class="proj reveal" style="--i:9">
                 <div class="proj-img" style="background-image:url('assets/projects/POCHE_CAPTURE_3.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/poche_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Poche</span>
                     <span class="proj-cat">Film & Capture</span>
@@ -158,6 +177,7 @@
             </a>
             <a href="project-viktorrolf.html" class="proj proj--wide reveal" style="--i:10">
                 <div class="proj-img" style="background-image:url('assets/projects/VIKTOR_ROLF_KV_1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/viktorrolf_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Viktor & Rolf Flowerbomb</span>
                     <span class="proj-cat">Key Visuals & Capture</span>
@@ -165,6 +185,7 @@
             </a>
             <a href="project-valentino.html" class="proj reveal" style="--i:11">
                 <div class="proj-img" style="background-image:url('assets/projects/VALENTINO_CAPTURE_1.jpg');"></div>
+                <video class="proj-video" muted loop playsinline preload="none" src="assets/projects/valentino_film.mp4"></video>
                 <div class="proj-meta">
                     <span class="proj-name">Valentino Beauty</span>
                     <span class="proj-cat">Film & Capture</span>
@@ -184,9 +205,9 @@
     <section class="section section-about" id="about">
         <div class="about-hero reveal">
             <h2 class="fat-title">
-                <span>WE CRAFT</span>
-                <span>BRANDS THAT</span>
-                <span class="fat-outline">MATTER</span>
+                <span>IN HOUSE</span>
+                <span>HUMAN</span>
+                <span class="fat-outline">CREATIVITY</span>
             </h2>
         </div>
         <div class="about-body">

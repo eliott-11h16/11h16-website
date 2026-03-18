@@ -19,10 +19,20 @@ $c = function($key, $default = '') use ($siteContent) {
     <meta name="description" content="11H16 — Creative Studio based in Paris. In House Human Creativity.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Barlow+Condensed:wght@700&family=Bebas+Neue&&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Splash Screen -->
+    <div class="splash" id="splash">
+        <div class="splash-text">
+            <span class="splash-word" style="--d:0"><?= e($c('splash_line_1', 'CREATING FOR')) ?></span>
+            <span class="splash-word" style="--d:1"><?= e($c('splash_line_2', 'TOMORROW WITH')) ?></span>
+            <span class="splash-word" style="--d:2"><?= e($c('splash_line_3', 'TOOLS OF TODAY')) ?></span>
+        </div>
+        <div class="splash-sub"><?= e($c('splash_sub', 'CREATIVE CGI STUDIO')) ?></div>
+    </div>
 
     <?php include __DIR__ . '/includes/header.php'; ?>
 
@@ -34,12 +44,12 @@ $c = function($key, $default = '') use ($siteContent) {
         </video>
         <?php endforeach; ?>
         <div class="hero-text">
-            <div class="hero-line"><span class="hero-word" style="--d:0"><?= e($c('hero_line_1', 'IN HOUSE')) ?></span></div>
-            <div class="hero-line"><span class="hero-word" style="--d:1"><?= e($c('hero_line_2', 'HUMAN')) ?></span></div>
-            <div class="hero-line"><span class="hero-word" style="--d:2"><?= e($c('hero_line_3', 'CREATIVITY')) ?></span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:0"><?= e($c('hero_line_1', 'CREATING FOR')) ?></span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:1"><?= e($c('hero_line_2', 'TOMORROW WITH')) ?></span></div>
+            <div class="hero-line"><span class="hero-word" style="--d:2"><?= e($c('hero_line_3', 'TOOLS OF TODAY')) ?></span></div>
         </div>
         <div class="hero-sub">
-            <h1 class="hero-desc"><?= nl2br(e($c('hero_desc', "Creative CGI Studio,\nCreating for tomorrow with tools of today."))) ?></h1>
+            <h1 class="hero-desc"><?= nl2br(e($c('hero_desc', "Creative CGI Studio,\nIn House Creativity."))) ?></h1>
             <p class="hero-tags"><?= e($c('hero_tags', 'CGI. AI. VFX. Production. Creative Direction.')) ?></p>
         </div>
         <div class="hero-progress">
@@ -63,6 +73,9 @@ $c = function($key, $default = '') use ($siteContent) {
             <?php foreach ($projects as $i => $p): ?>
             <a href="project.php?slug=<?= e($p['slug']) ?>" class="proj <?= $p['is_wide'] ? 'proj--wide' : '' ?> reveal" style="--i:<?= $i ?>">
                 <div class="proj-img" style="background-image:url('<?= e($p['thumbnail']) ?>');"></div>
+                <?php if (!empty($p['preview_video'])): ?>
+                <video class="proj-video" muted loop playsinline preload="none" src="<?= e($p['preview_video']) ?>"></video>
+                <?php endif; ?>
                 <div class="proj-meta">
                     <span class="proj-name"><?= e($p['name']) ?></span>
                     <span class="proj-cat"><?= e($p['type']) ?></span>
@@ -76,9 +89,9 @@ $c = function($key, $default = '') use ($siteContent) {
     <section class="section section-about" id="about">
         <div class="about-hero reveal">
             <h2 class="fat-title">
-                <span><?= e($c('about_title_1', 'WE CRAFT')) ?></span>
-                <span><?= e($c('about_title_2', 'BRANDS THAT')) ?></span>
-                <span class="fat-outline"><?= e($c('about_title_3', 'MATTER')) ?></span>
+                <span><?= e($c('about_title_1', 'IN HOUSE')) ?></span>
+                <span><?= e($c('about_title_2', 'HUMAN')) ?></span>
+                <span class="fat-outline"><?= e($c('about_title_3', 'CREATIVITY')) ?></span>
             </h2>
         </div>
         <div class="about-body">

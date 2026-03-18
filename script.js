@@ -1,5 +1,176 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ─── Splash Screen ─────────────────────────────
+    const splash = document.getElementById('splash');
+    if (splash) {
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            splash.classList.add('fade-out');
+            document.body.style.overflow = '';
+        }, 3000);
+        splash.addEventListener('animationend', (e) => {
+            if (e.animationName === 'splashOut') {
+                splash.remove();
+            }
+        });
+    }
+
+    // ─── Split-flap airport board effect ────────────
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const FLIP_INTERVAL = 50;   // ms between each random letter
+    const CHAR_STAGGER = 80;    // ms stagger between characters
+    const LINE_STAGGER = 200;   // ms stagger between lines
+
+    function buildFlap(ch) {
+        const el = document.createElement('span');
+        el.className = 'flap-char' + (ch === ' ' ? ' is-space' : '');
+        if (ch !== ' ') {
+            const top = document.createElement('span');
+            top.className = 'flap-top';
+            top.innerHTML = `<span>${ch}</span>`;
+            const bot = document.createElement('span');
+            bot.className = 'flap-bottom';
+            bot.innerHTML = `<span>${ch}</span>`;
+            el.appendChild(top);
+            el.appendChild(bot);
+        }
+        return el;
+    }
+
+    function setFlapChar(el, ch) {
+        const top = el.querySelector('.flap-top span');
+        const bot = el.querySelector('.flap-bottom span');
+        if (top) top.textContent = ch;
+        if (bot) bot.textContent = ch;
+    }
+
+    function spinFlap(el, target, flips, delay) {
+        let count = 0;
+        setTimeout(() => {
+            const iv = setInterval(() => {
+                const rand = CHARS[Math.floor(Math.random() * CHARS.length)];
+                setFlapChar(el, rand);
+                // quick top-half kick on each flip
+                const topHalf = el.querySelector('.flap-top');
+                if (topHalf) {
+                    topHalf.style.transform = 'rotateX(-20deg)';
+                    requestAnimationFrame(() => {
+                        topHalf.style.transition = 'transform 0.04s ease-out';
+                        topHalf.style.transform = 'rotateX(0)';
+                        setTimeout(() => { topHalf.style.transition = ''; }, 50);
+                    });
+                }
+                count++;
+                if (count >= flips) {
+                    clearInterval(iv);
+                    setFlapChar(el, target);
+                    el.classList.add('done');
+                }
+            }, FLIP_INTERVAL);
+        }, delay);
+    }
+
+    function initFlaps(selector, baseDelay) {
+        document.querySelectorAll(selector).forEach(word => {
+            const text = word.textContent;
+            const lineDelay = parseFloat(word.style.getPropertyValue('--d')) || 0;
+            word.textContent = '';
+            let charIndex = 0;
+            for (const ch of text) {
+                const flap = buildFlap(ch === ' ' ? ' ' : CHARS[Math.floor(Math.random() * CHARS.length)]);
+                word.appendChild(flap);
+                if (ch !== ' ') {
+                    flap.dataset.target = ch;
+                    const delay = baseDelay + lineDelay * LINE_STAGGER + charIndex * CHAR_STAGGER;
+                    const flips = 6 + Math.floor(Math.random() * 6);
+                    spinFlap(flap, ch, flips, delay);
+                    charIndex++;
+                }
+            }
+        });
+    }
+
+    // Hover effect on hero letters — cycle through "11H16" chars
+    const LOGO_CHARS = ['1', '1', 'H', '1', '6'];
+    function addHoverFlap(flap, originalChar) {
+        let hoverInterval = null;
+        flap.addEventListener('mouseenter', () => {
+            if (hoverInterval) return;
+            flap.classList.remove('done');
+            let count = 0;
+            hoverInterval = setInterval(() => {
+                const rand = LOGO_CHARS[Math.floor(Math.random() * LOGO_CHARS.length)];
+                setFlapChar(flap, rand);
+                const topHalf = flap.querySelector('.flap-top');
+                if (topHalf) {
+                    topHalf.style.transform = 'rotateX(-20deg)';
+                    requestAnimationFrame(() => {
+                        topHalf.style.transition = 'transform 0.04s ease-out';
+                        topHalf.style.transform = 'rotateX(0)';
+                        setTimeout(() => { topHalf.style.transition = ''; }, 50);
+                    });
+                }
+                count++;
+            }, FLIP_INTERVAL);
+        });
+        flap.addEventListener('mouseleave', () => {
+            // Let it spin a few more times before settling
+            let remaining = 4 + Math.floor(Math.random() * 4); // 4-7 extra flips
+            const slowDown = setInterval(() => {
+                const rand = LOGO_CHARS[Math.floor(Math.random() * LOGO_CHARS.length)];
+                setFlapChar(flap, rand);
+                const topHalf = flap.querySelector('.flap-top');
+                if (topHalf) {
+                    topHalf.style.transform = 'rotateX(-20deg)';
+                    requestAnimationFrame(() => {
+                        topHalf.style.transition = 'transform 0.06s ease-out';
+                        topHalf.style.transform = 'rotateX(0)';
+                        setTimeout(() => { topHalf.style.transition = ''; }, 70);
+                    });
+                }
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(slowDown);
+                    if (hoverInterval) {
+                        clearInterval(hoverInterval);
+                        hoverInterval = null;
+                    }
+                    setFlapChar(flap, originalChar);
+                    flap.classList.add('done');
+                }
+            }, 80); // slower interval for the wind-down
+            if (hoverInterval) {
+                clearInterval(hoverInterval);
+                hoverInterval = null;
+            }
+        });
+    }
+
+    // Apply to splash screen (immediate)
+    initFlaps('.splash-word', 200);
+
+    // Apply to hero text (delayed until after splash)
+    initFlaps('.hero-word', 300);
+
+    // Attach hover to hero flap chars
+    document.querySelectorAll('.hero-word .flap-char:not(.is-space)').forEach(flap => {
+        const originalChar = flap.dataset.target;
+        addHoverFlap(flap, originalChar);
+    });
+
+    // ─── Project Video Hover ─────────────────────────
+    document.querySelectorAll('.proj').forEach(proj => {
+        const video = proj.querySelector('.proj-video');
+        if (!video) return;
+        proj.addEventListener('mouseenter', () => {
+            video.currentTime = 0;
+            video.play().catch(() => {});
+        });
+        proj.addEventListener('mouseleave', () => {
+            video.pause();
+        });
+    });
+
     // ─── Mobile Menu ─────────────────────────────────
     const menuBtn = document.getElementById('menuBtn');
     const mobMenu = document.getElementById('mobMenu');

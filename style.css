@@ -19,6 +19,7 @@
     --rule: rgba(0, 0, 0, 0.08);
 
     --font-fat: 'Roboto Flex', sans-serif;
+    --font-title: 'Barlow Condensed', sans-serif;
     --font-body: 'Roboto Flex', sans-serif;
 
     /* Variable font axes for display usage */
@@ -64,6 +65,86 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
+
+/* ============================================
+   Splash Screen
+   ============================================ */
+
+.splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+}
+
+.splash.fade-out .splash-text,
+.splash.fade-out .splash-sub {
+    animation: splashContentUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.splash.fade-out {
+    animation: splashOut 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    pointer-events: none;
+}
+
+.splash-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.9;
+}
+
+.splash-word {
+    display: flex;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    font-weight: 700;
+    font-size: clamp(36px, 7vw, 90px);
+    text-transform: uppercase;
+    color: var(--black);
+}
+
+.splash .flap-char:not(.is-space)::after {
+    background: rgba(0,0,0,0.1);
+}
+
+.splash-sub {
+    font-family: var(--font-fat);
+    font-weight: var(--fat-weight);
+    font-stretch: 25%;
+    font-size: clamp(11px, 1.2vw, 16px);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--grey);
+    margin-top: 24px;
+    opacity: 0;
+    animation: splashSubIn 0.6s ease forwards;
+    animation-delay: 1.2s;
+}
+
+@keyframes splashSubIn {
+    to { opacity: 1; }
+}
+
+@keyframes splashContentUp {
+    to {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+}
+
+@keyframes splashOut {
+    0% { opacity: 1; }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
 
 /* ============================================
    Navigation — detroit.paris style split
@@ -121,7 +202,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .nav-link {
-    font-family: var(--font-body);
+    font-family: var(--font-title);
     font-size: 12px;
     font-weight: 400;
     text-transform: uppercase;
@@ -324,21 +405,89 @@ a { color: inherit; text-decoration: none; }
 
 .hero-line {
     overflow: hidden;
-    line-height: 0.88;
+    line-height: 0.82;
+    display: flex;
+    gap: 0;
 }
 
 .hero-word {
-    display: block;
-    font-family: var(--font-fat);
+    display: flex;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    font-weight: 700;
     font-size: clamp(40px, 8vw, 110px);
-    letter-spacing: clamp(1px, 0.2vw, 3px);
+    letter-spacing: 0;
     text-transform: uppercase;
-    transform: translateY(110%);
-    animation: slideUp 1s var(--ease-smooth) calc(var(--d) * 0.12s + 0.2s) forwards;
 }
 
-@keyframes slideUp {
-    to { transform: translateY(0); }
+/* ── Split-flap airport board ── */
+.flap-char {
+    display: inline-block;
+    position: relative;
+    perspective: 500px;
+    line-height: 1;
+    cursor: default;
+}
+
+.hero-word .flap-char:not(.is-space) {
+    cursor: pointer;
+}
+
+.flap-top, .flap-bottom {
+    display: block;
+    height: 0.55em;
+    overflow: hidden;
+    position: relative;
+    backface-visibility: hidden;
+}
+
+.flap-top {
+    transform-origin: bottom center;
+}
+
+.flap-bottom {
+    transform-origin: top center;
+}
+
+.flap-bottom span {
+    display: block;
+    margin-top: -0.55em;
+}
+
+.flap-char.is-space {
+    width: 0.3em;
+}
+
+/* Once settled: remove line, merge halves into clean letter */
+.flap-char.done::after {
+    opacity: 0;
+}
+
+.flap-char.done .flap-top,
+.flap-char.done .flap-bottom {
+    height: auto;
+    overflow: visible;
+}
+
+.flap-char.done .flap-bottom span {
+    margin-top: 0;
+}
+
+.flap-char.done .flap-bottom {
+    display: none;
+}
+
+.flap-char:not(.is-space)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transition: opacity 0.3s ease;
+    height: 1px;
+    background: rgba(0,0,0,0.15);
+    z-index: 3;
+    pointer-events: none;
 }
 
 .hero-sub {
@@ -407,7 +556,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .sec-title {
-    font-family: var(--font-fat);
+    font-family: var(--font-title);
     font-size: clamp(40px, 7vw, 100px);
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -430,6 +579,7 @@ a { color: inherit; text-decoration: none; }
 .proj {
     display: block;
     overflow: hidden;
+    position: relative;
 }
 
 .proj-img {
@@ -440,6 +590,26 @@ a { color: inherit; text-decoration: none; }
     transition: transform 0.7s var(--ease-smooth);
 }
 
+.proj-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.proj--wide .proj-video {
+    aspect-ratio: 21 / 9;
+}
+
+.proj:hover .proj-video {
+    opacity: 1;
+}
+
 .proj--wide {
     grid-column: span 2;
 }
@@ -448,9 +618,6 @@ a { color: inherit; text-decoration: none; }
     aspect-ratio: 21 / 9;
 }
 
-.proj:hover .proj-img {
-    transform: scale(1.03);
-}
 
 .proj-meta {
     display: flex;
@@ -460,7 +627,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .proj-name {
-    font-family: var(--font-fat);
+    font-family: var(--font-title);
     font-size: clamp(14px, 1.3vw, 18px);
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -483,7 +650,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .fat-title {
-    font-family: var(--font-fat);
+    font-family: var(--font-title);
     display: flex;
     flex-direction: column;
     line-height: 0.92;
@@ -512,8 +679,10 @@ a { color: inherit; text-decoration: none; }
     font-weight: 400;
     line-height: 1.8;
     color: var(--grey-dark);
-    max-width: 460px;
+    max-width: 600px;
+    margin-bottom: 1.5em;
 }
+.about-text p:last-child { margin-bottom: 0; }
 
 .about-services {
     border-top: 2px solid var(--black);
@@ -526,9 +695,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 .svc-title {
-    font-family: var(--font-fat);
-    font-weight: var(--fat-weight);
-    font-stretch: 25%;
+    font-family: var(--font-title);
+    font-weight: 700;
     font-size: clamp(13px, 1.2vw, 16px);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -582,7 +750,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .contact-email {
-    font-family: var(--font-fat);
+    font-family: var(--font-title);
     font-size: clamp(18px, 2.5vw, 32px);
     letter-spacing: 1px;
     text-transform: uppercase;
