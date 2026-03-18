@@ -10,11 +10,8 @@ Thumbs.db
 *.mov
 *.avi
 
-# PHP backend (not for static deploy)
+# Credentials (ne jamais push)
 includes/config.php
-install.php
-migrate.php
-admin/
 
 # Dependencies
 node_modules/
