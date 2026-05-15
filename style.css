@@ -728,6 +728,74 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ============================================
+   Team
+   ============================================ */
+
+.section-team {
+    padding-top: 0;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+}
+
+.team-col {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 2vw, 32px);
+}
+
+.team-member {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.team-name {
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: clamp(13px, 1.1vw, 15px);
+    letter-spacing: 0.5px;
+    text-transform: none;
+    color: var(--black);
+}
+
+.team-role {
+    font-size: clamp(12px, 0.95vw, 14px);
+    font-weight: 400;
+    color: var(--grey-dark);
+    line-height: 1.4;
+}
+
+.team-mail {
+    font-size: clamp(12px, 0.95vw, 14px);
+    font-weight: 400;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin-top: 2px;
+}
+
+.team-mail:hover {
+    color: var(--black);
+}
+
+@media (max-width: 1024px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
    Contact
    ============================================ */
 
